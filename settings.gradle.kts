@@ -1,27 +1,8 @@
-rootProject.name = "Plugins"
+rootProject.name = "Amsterdam-email-api-plugin"
 include(
     "backend",
     "backend:app",
-    "backend:alfresco-authentication",
     "backend:amsterdam-email-api",
-    "backend:berkelybridge-textgenerator",
-    "backend:valtimo-ocr",
-    "backend:externe-klanttaak",
-    "backend:freemarker",
-    "backend:haal-centraal",
-    "backend:haal-centraal-auth",
-    "backend:mTLS-SSLContext",
-    "backend:notify-nl",
-    "backend:object-management",
-    "backend:publictask",
-    "backend:rotterdam-oracle-ebs",
-    "backend:slack",
-    "backend:smtpmail",
-    "backend:spotler",
-    "backend:suwinet",
-    "backend:xential",
-    "backend:hugging-face",
-    "backend:kvk-handelsregister",
     "frontend",
 )
 
