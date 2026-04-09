@@ -163,16 +163,10 @@ class EmailApiPlugin(
                 logger.debug { "adding attachment: " +  informatieObject.bestandsnaam}
 
                 val downloadURI = URI(informatieObject.url.toString().plus("/download"))
-                val content = restClient
-                    .get()
-                    .uri(downloadURI)
-                    .retrieve()
-                    .body<ByteArray>()!!
 
-                val attachment: Attachment = Attachment(
+                val attachment = Attachment(
                     ATTACHMENT,
                     informatieObject.bestandsnaam,
-                    Base64.getEncoder().encodeToString(content),
                     informatieObject.formaat,
                     downloadURI
                 )
