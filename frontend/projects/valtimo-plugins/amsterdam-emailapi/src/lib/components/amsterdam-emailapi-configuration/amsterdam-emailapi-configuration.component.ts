@@ -27,6 +27,8 @@ import {TranslateService} from "@ngx-translate/core";
   selector: 'valtimo-amsterdam-emailapi-configuration',
   templateUrl: './amsterdam-emailapi-configuration.component.html',
   styleUrls: ['./amsterdam-emailapi-configuration.component.scss'],
+  // Angular 19 defaults components to standalone; this one is declared by AmsterdamEmailapiPluginModule.
+  standalone: false,
 })
 export class AmsterdamEmailapiConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy

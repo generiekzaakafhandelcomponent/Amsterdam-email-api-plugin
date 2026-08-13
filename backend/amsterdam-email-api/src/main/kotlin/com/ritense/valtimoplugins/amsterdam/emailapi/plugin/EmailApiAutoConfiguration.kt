@@ -21,7 +21,6 @@ package com.ritense.valtimoplugins.amsterdam.emailapi.plugin
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.ritense.documentenapi.client.DocumentInformatieObject
-import com.ritense.plugin.repository.PluginProcessLinkRepository
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.jackson.ZonedLocalDateTimeDeserializer
 import com.ritense.valtimoplugins.amsterdam.emailapi.client.EmailClient
@@ -31,7 +30,6 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuil
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties.Restclient
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -43,18 +41,6 @@ import java.time.LocalDateTime
 
 @Configuration
 class EmailApiAutoConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean(ProcessLinkSendTaskStartListener::class)
-    fun pluginLinkSendTaskStartListener(
-        pluginProcessLinkRepository: PluginProcessLinkRepository?,
-        pluginService: PluginService?
-    ): ProcessLinkSendTaskStartListener {
-        return ProcessLinkSendTaskStartListener(
-            pluginProcessLinkRepository!!,
-            pluginService!!
-        )
-    }
 
     @Bean
     @ConditionalOnMissingBean(EmailApiPluginFactory::class)

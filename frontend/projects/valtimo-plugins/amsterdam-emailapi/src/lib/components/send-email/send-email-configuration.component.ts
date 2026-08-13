@@ -26,6 +26,8 @@ import {SendEmailConfig} from "../../models";
   selector: 'valtimo-send-email-configuration',
   templateUrl: './send-email-configuration.component.html',
   styleUrls: ['./send-email-configuration.component.scss'],
+  // Angular 19 defaults components to standalone; this one is declared by AmsterdamEmailapiPluginModule.
+  standalone: false,
 })
 export class SendEmailConfigurationComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy
