@@ -16,7 +16,7 @@ import com.ritense.valtimoplugins.amsterdam.emailapi.client.Recipient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.net.URI
 import java.util.Base64
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.springframework.util.MimeTypeUtils
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body

@@ -56,12 +56,12 @@ subprojects {
         apply(plugin = "com.avast.gradle.docker-compose")
         apply(plugin = "maven-publish")
 
-        java.sourceCompatibility = JavaVersion.VERSION_17
-        java.targetCompatibility = JavaVersion.VERSION_17
+        java.sourceCompatibility = JavaVersion.VERSION_21
+        java.targetCompatibility = JavaVersion.VERSION_21
 
         tasks.withType<KotlinCompile> {
             compilerOptions {
-                jvmTarget = JvmTarget.JVM_17
+                jvmTarget = JvmTarget.JVM_21
                 javaParameters = true
             }
         }

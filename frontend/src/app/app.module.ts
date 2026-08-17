@@ -17,7 +17,12 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {Injector, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HttpBackend, HttpClient, HttpClientModule} from '@angular/common/http';
+import {
+    HttpBackend,
+    HttpClient,
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LayoutModule, TranslationManagementModule} from '@valtimo/layout';
@@ -26,7 +31,6 @@ import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
 import {
     BpmnJsDiagramModule,
-    CardModule,
     enableCustomFormioComponents,
     MenuModule,
     registerFormioFileSelectorComponent,
@@ -37,13 +41,13 @@ import {
 
 } from '@valtimo/components';
 import {
+    CaseDetailTabAuditComponent,
+    CaseDetailTabDocumentsComponent,
+    CaseDetailTabProgressComponent,
+    CaseDetailTabSummaryComponent,
+    CaseModule,
     DefaultTabs,
-    DossierDetailTabAuditComponent,
-    DossierDetailTabDocumentsComponent,
-    DossierDetailTabProgressComponent,
-    DossierDetailTabSummaryComponent,
-    DossierModule,
-} from '@valtimo/dossier';
+} from '@valtimo/case';
 import {ProcessModule} from '@valtimo/process';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DocumentModule} from '@valtimo/document';
@@ -59,9 +63,9 @@ import {MilestoneModule} from '@valtimo/milestone';
 import {LoggerModule} from 'ngx-logger';
 import {FormManagementModule} from '@valtimo/form-management';
 import {MigrationModule} from '@valtimo/migration';
-import {DossierManagementModule} from '@valtimo/dossier-management';
+import {CaseManagementModule} from '@valtimo/case-management';
 import {BootstrapModule} from '@valtimo/bootstrap';
-import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, LocalizationService} from '@valtimo/config';
+import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, LocalizationService} from '@valtimo/shared';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
@@ -83,7 +87,6 @@ import {
     PLUGINS_TOKEN
 } from '@valtimo/plugin';
 import {ZgwModule} from '@valtimo/zgw';
-import {TaskManagementModule} from '@valtimo/task-management';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
 import {ObjectModule} from "@valtimo/object";
@@ -96,10 +99,10 @@ import {DashboardManagementModule} from "@valtimo/dashboard-management";
 
 export function tabsFactory() {
     return new Map<string, object>([
-        [DefaultTabs.summary, DossierDetailTabSummaryComponent],
-        [DefaultTabs.progress, DossierDetailTabProgressComponent],
-        [DefaultTabs.audit, DossierDetailTabAuditComponent],
-        [DefaultTabs.documents, DossierDetailTabDocumentsComponent],
+        [DefaultTabs.summary, CaseDetailTabSummaryComponent],
+        [DefaultTabs.progress, CaseDetailTabProgressComponent],
+        [DefaultTabs.audit, CaseDetailTabAuditComponent],
+        [DefaultTabs.documents, CaseDetailTabDocumentsComponent],
     ]);
 }
 
@@ -110,12 +113,10 @@ export function tabsFactory() {
     imports: [
         ValuePathSelectorComponent,
         AmsterdamEmailapiPluginModule,
-        HttpClientModule,
         CommonModule,
         BrowserModule,
         AppRoutingModule,
         LayoutModule,
-        CardModule,
         WidgetModule,
         BootstrapModule,
         ConfigModule.forRoot(environment),
@@ -124,7 +125,7 @@ export function tabsFactory() {
         SecurityModule,
         MenuModule,
         TaskModule,
-        DossierModule.forRoot(tabsFactory),
+        CaseModule.forRoot(tabsFactory),
         ProcessModule,
         BpmnJsDiagramModule,
         FormsModule,
@@ -143,7 +144,7 @@ export function tabsFactory() {
         ProcessLinkModule,
         MigrationModule,
         LoggingModule,
-        DossierManagementModule,
+        CaseManagementModule,
         PluginManagementModule,
         AccessControlManagementModule,
         CatalogiApiPluginModule,
@@ -155,7 +156,6 @@ export function tabsFactory() {
         ObjectTokenAuthenticationPluginModule,
         ObjectModule,
         ObjectManagementModule,
-        HttpClientModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -164,24 +164,26 @@ export function tabsFactory() {
             },
         }),
         TranslationManagementModule,
-        TaskManagementModule,
         DashboardModule,
         DashboardManagementModule,
         ZgwModule
     ],
-    providers: [{
-        provide: PLUGINS_TOKEN,
-        useValue: [
-            amsterdamEmailapiPluginSpecification,
-            objectTokenAuthenticationPluginSpecification,
-            objectenApiPluginSpecification,
-            objecttypenApiPluginSpecification,
-            catalogiApiPluginSpecification,
-            documentenApiPluginSpecification,
-            openZaakPluginSpecification,
-            zakenApiPluginSpecification
-        ]
-    }],
+    providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        {
+            provide: PLUGINS_TOKEN,
+            useValue: [
+                amsterdamEmailapiPluginSpecification,
+                objectTokenAuthenticationPluginSpecification,
+                objectenApiPluginSpecification,
+                objecttypenApiPluginSpecification,
+                catalogiApiPluginSpecification,
+                documentenApiPluginSpecification,
+                openZaakPluginSpecification,
+                zakenApiPluginSpecification
+            ]
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
